@@ -31,13 +31,60 @@ Before you begin, ensure you have the following installed:
    }
    ```
 
-4. **Run Migrations:**
+4. **Create the Database and Tables:**
+   You can execute the following SQL commands to create the database and the necessary tables:
+
+   ```sql
+   -- Create the database
+   CREATE DATABASE WorkOrderDB;
+   GO
+
+   -- Use the newly created database
+   USE WorkOrderDB;
+   GO
+
+   -- Create the Demands table
+   CREATE TABLE Demands (
+       DemandNo NVARCHAR(450) PRIMARY KEY,
+       PartNo NVARCHAR(MAX) NOT NULL,
+       DemandDate DATETIME2 NOT NULL,
+       Quantity DECIMAL(18, 4) NOT NULL
+   );
+
+   -- Create the Supplies table
+   CREATE TABLE Supplies (
+       SupplyNo NVARCHAR(450) PRIMARY KEY,
+       PartNo NVARCHAR(MAX) NOT NULL,
+       SupplyDate DATETIME2 NOT NULL,
+       Quantity DECIMAL(18, 4) NOT NULL
+   );
+
+   -- Create the BOMs table
+   CREATE TABLE BOMs (
+       ParentPart NVARCHAR(450) NOT NULL,
+       ChildPart NVARCHAR(450) NOT NULL,
+       OpNo INT NOT NULL,
+       RequiredQuantity DECIMAL(18, 4) NOT NULL,
+       PRIMARY KEY (ParentPart, ChildPart)
+   );
+
+   -- Create the WorkOrders table
+   CREATE TABLE WorkOrders (
+       WorkOrderNo NVARCHAR(450) PRIMARY KEY,
+       MachineNo NVARCHAR(MAX) NOT NULL,
+       OperatorName NVARCHAR(MAX) NOT NULL,
+       OrderQty INT NOT NULL,
+       CompletedQty INT NOT NULL
+   );
+   ```
+
+6. **Run Migrations:**
    To create the database schema, run the following command:
    ```bash
    dotnet ef database update
    ```
 
-5. **Start the Backend Server:**
+7. **Start the Backend Server:**
    ```bash
    dotnet run
    ```
